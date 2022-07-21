@@ -2,6 +2,7 @@ package com.fancq.seckill;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,6 +12,7 @@ import java.util.Date;
  * @since 2022/7/20 11:50
  */
 public class ChromeSeckill {
+
     public static void main(String[] args) throws Exception {
         taoBao();
     }
@@ -24,11 +26,15 @@ public class ChromeSeckill {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSSSSSSSS");
         Date date = sdf.parse("2022-07-20 14:07:00 000000000");
 
+        // 浏览器闪退，解决方案：https://blog.csdn.net/qew110123/article/details/87708659
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+
         //1、打开浏览器
-        ChromeDriver browser = new ChromeDriver();
-//        Actions actions = new Actions(browser);
+        ChromeDriver browser = new ChromeDriver(options);
+
         //2、输入网址
-        browser.get("https://www.taobao.com");
+        browser.get("http://www.taobao.com");
         Thread.sleep(3000);
 
         //3、点击登录
