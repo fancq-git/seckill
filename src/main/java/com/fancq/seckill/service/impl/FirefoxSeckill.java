@@ -1,4 +1,4 @@
-package com.fancq.seckill;
+package com.fancq.seckill.service.impl;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,6 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.fancq.seckill.service.Seckill;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Navigation;
@@ -15,16 +16,18 @@ import org.openqa.selenium.WebDriver.Window;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 /**
+ * Firefox 浏览器秒杀.
+ *
  * @author fancq
  * @since 2022/7/20 17:10
  */
-public class FirefoxSeckill {
+public class FirefoxSeckill implements Seckill {
 
-    public static void main(String[] args) {
-        seckill();
-    }
-
-    public static void seckill() {
+    /**
+     * 秒杀
+     */
+    @Override
+    public void doSeckill() {
         //浏览器驱动路径
         System.setProperty("webdriver.gecko.driver", "C:\\Users\\Administrator\\Desktop\\geckodriver.exe");
 

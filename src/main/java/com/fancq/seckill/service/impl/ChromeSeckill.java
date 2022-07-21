@@ -1,34 +1,45 @@
-package com.fancq.seckill;
+package com.fancq.seckill.service.impl;
 
+import com.fancq.seckill.service.Seckill;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.chrome.ChromeOptions;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * Chrome 浏览器秒杀.
+ *
  * @author fancq
- * @since 2022/7/20 17:19
+ * @since 2022/7/20 11:50
  */
-public class Seckill {
+public class ChromeSeckill implements Seckill {
 
-    public static void main(String[] args) throws ParseException, InterruptedException {
+    /**
+     * 秒杀.
+     *
+     * @throws Exception
+     */
+    @Override
+    public void doSeckill() throws Exception {
+
         //浏览器驱动路径
-        System.setProperty("webdriver.gecko.driver", "C:\\Users\\Administrator\\Desktop\\geckodriver.exe");
+        System.setProperty("webdriver.chrome.driver", "C:\\Program Files\\Google\\Chrome\\Application\\chromedriver.exe");
 
         //设置秒杀时间
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSSSSSSSS");
         Date date = sdf.parse("2022-07-20 14:07:00 000000000");
 
+        // 浏览器闪退，解决方案：https://blog.csdn.net/qew110123/article/details/87708659
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--no-sandbox");
+
         //1、打开浏览器
-        WebDriver browser = new FirefoxDriver();
-        Actions actions = new Actions(browser);
+        ChromeDriver browser = new ChromeDriver(options);
+
         //2、输入网址
-        browser.get("https://www.taobao.com");
+        browser.get("http://www.taobao.com");
         Thread.sleep(3000);
 
         //3、点击登录
@@ -64,4 +75,5 @@ public class Seckill {
 
         Thread.sleep(5000);
     }
+
 }
