@@ -1,12 +1,14 @@
 package com.fancq.seckill.service.impl;
 
 import com.fancq.seckill.service.Seckill;
+import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * Chrome 浏览器秒杀.
@@ -14,7 +16,10 @@ import java.util.Date;
  * @author fancq
  * @since 2022/7/20 11:50
  */
+@Slf4j
 public class ChromeSeckill implements Seckill {
+
+    private static final String CART_XPATH = "//*[@id=\"J_Order_s_101450072_1\"]/div[1]/div/div/label";
 
     /**
      * 秒杀.
@@ -40,36 +45,36 @@ public class ChromeSeckill implements Seckill {
 
         //2、输入网址
         browser.get("http://www.taobao.com");
-        Thread.sleep(3000);
 
         //3、点击登录
-        browser.findElement(By.linkText("亲，请登录")).click();
-
-        Thread.sleep(2000);
+        if (Objects.nonNull(browser.findElement(By.linkText("亲，请登录")))) {
+            browser.findElement(By.linkText("亲，请登录")).click();
+        }
 
         //4、扫码登录
         browser.findElement(By.className("icon-qrcode")).click();
-        Thread.sleep(4000);
+        Thread.sleep(5000);
 
         //5、进入购物车页面
         browser.get("https://cart.taobao.com/cart.htm");
-        Thread.sleep(3000);
 
         //6、点击选择第一个按钮
-        browser.findElement(By.xpath("//*[@id=\"J_Order_s_2207407355826_1\"]/div[1]/div/div/label")).click();
+        if (Objects.nonNull(browser.findElement(By.xpath(CART_XPATH)))) {
+            browser.findElement(By.xpath(CART_XPATH)).click();
+        }
 
-        Thread.sleep(2000);
-        while (true){
+        while (true) {
             //当前时间
             Date now = new Date();
-            System.out.println(now);
-            if(now.after(date)){
-                if(browser.findElement(By.linkText("结 算")).isEnabled()){
-                    browser.findElement(By.linkText("结 算")).click();
-                    System.out.println("结算成功");
+            log.info("当前时间: {}", sdf.format(now));
+            if (now.after(date) && browser.findElement(By.linkText("结 算")).isEnabled()) {
+                browser.findElement(By.linkText("结 算")).click();
+                System.out.println("已结算");
+                if (Objects.nonNull(browser.findElement(By.linkText("提交订单")))) {
+                    browser.findElement(By.linkText("提交订单")).click();
+                    System.out.println(String.format("抢购成功时间：%s", sdf.format(new Date())));
                     break;
                 }
-
             }
         }
 
